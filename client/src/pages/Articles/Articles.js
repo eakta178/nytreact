@@ -47,6 +47,7 @@ class Articles extends Component {
   // When the form is submitted, use the API.savearticle method to save the article data
   // Then reload articles from the database
   handleFormSubmit = event => {
+    const articles = [];
     event.preventDefault();
     if (this.state.topic) {
       API.scrape({
@@ -55,9 +56,12 @@ class Articles extends Component {
         end: this.state.end
       })
         .then(res=>{
-          console.log(res)
+          console.log(res);
+          res.data.response.docs.forEach(article => articles.push(article));
+          this.setState({
+            articles
+          });
         })
-        
         .catch(err => console.log(err));
     }
   };
@@ -91,7 +95,7 @@ class Articles extends Component {
                 name="end"
                 placeholder="End Year"
               />
-             
+
               <FormBtn
                 disabled={!(this.state.topic)}
                 onClick={this.handleFormSubmit}
@@ -108,15 +112,15 @@ class Articles extends Component {
             </Jumbotron>
             {this.state.articles.length ? (
               <List>
-                {this.state.articles.map(article => {
+                {this.state.articles.map((article, index) => {
                   return (
-                    <ListItem key={article._id}>
-                      <a href={"/articles/" + article._id}>
+                    <ListItem key={index}>
+                      <a href={article.web_url} target="_blank">
                         <strong>
-                          {article.title} by {article.author}
+                          {article.headline.main} by {article.byline.original}
                         </strong>
                       </a>
-                      <Btn onClick={() => this.deleteArticle(article._id)} />
+                      <Btn onClick={() => this.deleteArticle(index)} />
                     </ListItem>
                   );
                 })}
@@ -152,7 +156,7 @@ class Articles extends Component {
             )}
             </Col>
           </Row>
-        
+
       </Container>
     );
   }
