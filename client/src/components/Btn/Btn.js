@@ -31,6 +31,11 @@ const Btn = props => {
     Delete Note
     </button>);
     break;
+    case "view-note":
+    return(<button {...props}>
+    View/Add Note
+    </button>);
+    break;
 
   }
 };

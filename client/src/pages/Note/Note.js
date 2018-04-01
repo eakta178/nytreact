@@ -1,14 +1,36 @@
 import React from "react";
+import { Col, Row, Container } from "../../components/Grid";
+import { List, ListItem } from "../../components/List";
+import { Input, TextArea, FormBtn } from "../../components/Form";
 
 const Note = props =>
-  <div>
+      <form>
+      <Input
+        value={this.titleInput}
+        onChange={this.handleInputChange}
+        name="titleInput"
+        placeholder="Note Title"
+      />
+      <Input
+        value={this.bodyInput}
+        onChange={this.handleInputChange}
+        name="bodyInput"
+        placeholder="Add Note here"
+      />
 
-   <h4>{props.title}</h4>
-    <p>Publish Date & Time: {props.date}</p>
-    <a href={props.url} target="_blank">Link To Article</a><br/>
-    <button onClick={() => props.handleDeleteButton(props._id)}>Delete</button>
-
-  </div>
+      <FormBtn
+        onClick={() => this.addNoteToArticle(props._id)}
+      >
+        Add Note
+      </FormBtn>
+      <FormBtn
+        onClick={() => this.deleteNoteFromArticle(props._id)}
+      >
+        Delete Note
+      </FormBtn>
+      
+      
+      </form>
 
 
 export default Note;

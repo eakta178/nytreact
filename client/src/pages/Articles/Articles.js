@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Jumbotron from "../../components/Jumbotron";
+import Header from "../../components/Header";
 import Btn from "../../components/Btn";
 import API from "../../utils/API";
 import { Col, Row, Container } from "../../components/Grid";
@@ -13,9 +14,13 @@ class Articles extends Component {
   state = {
     articles: [],
     saved: [],
+    notes: [],
     topic: "",
     start: "",
-    end: ""
+    end: "",
+    titleInput: "",
+    bodyInput: "",
+
   };
 
   // When the component mounts, load all articles and save them to this.state.articles
@@ -59,11 +64,11 @@ class Articles extends Component {
     console.log('inside save article click')
     const itemID = this.state.articles.find((element) => element._id === id);
     const newArticle = {title: itemID.headline.main, date: itemID.pub_date, url: itemID.web_url};
-   console.log(itemID);
-   console.log(newArticle);
-    API.saveArticle(newArticle)
-      .then(res => this.loadSavedArticles())
-      .catch(err => console.log(err));
+    console.log(itemID);
+    console.log(newArticle);
+      API.saveArticle(newArticle)
+        .then(res => this.loadSavedArticles())
+        .catch(err => console.log(err));
   };
 
   // Handles updating component state when the user types into the input field
@@ -96,12 +101,32 @@ class Articles extends Component {
     }
   };
 
+  handleViewNote = event => {
+    const notes = [];
+    event.preventDefault();
+    this.renderNote();
+    if (this.state.titleInput) {
+      API.addNote({
+        titleInput: this.state.titleInput,
+        bodyInput: this.state.bodyInput
+        
+      })
+        .then(res=>{
+          console.log(res);
+          res.forEach(note => notes.push(note));
+          this.setState({
+            notes
+          });
+        })
+        .catch(err => console.log(err));
+    }
+  };
+
 
 
   renderSaved = () => {
     return this.state.saved.map(save => (
       <Saved
-     
         _id={save._id}
        key={save._id}
        title={save.title}
@@ -109,6 +134,20 @@ class Articles extends Component {
        url={save.url}
        deleteArticle={this.deleteArticle}
        loadSavedArticles={this.loadSavedArticles}
+      />
+    ));
+  }
+
+  renderNote = () => {
+    return this.state.notes.map(note => (
+      <Note
+        _id={note._id}
+       key={note._id}
+       titleInput={note.titleInput}
+       bodyInput={note.bodyInput}
+       handleInputChange={this.handleInputChange}
+       addNoteToArticle ={this.addNoteToArticle}
+       deleteNoteFromArticle={this.deleteNoteFromArticle}
       />
     ));
   }
@@ -122,7 +161,7 @@ class Articles extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1>Newyorktimes Article Scrubber</h1>
-              <h2>Search for and annotae articles of interest! </h2>
+              <h2>Search for and annotate articles of interest! </h2>
             </Jumbotron>
             <form>
               <Input
@@ -156,9 +195,9 @@ class Articles extends Component {
           </Row>
           <Row>
           <Col size="md-12">
-            <Jumbotron>
-              <h1>Results</h1>
-            </Jumbotron>
+            <Header>
+              <h2>Results</h2>
+            </Header>
             {this.state.articles.length ? (
               <List>
                 {this.state.articles.map((article, index) => {
@@ -169,8 +208,6 @@ class Articles extends Component {
                           {article.headline.main} by {article.byline.original}
                         </strong>
                       </a>
-                      {/* <Btn type="save" onClick={() => article.handleSaveArticle(index)} /> */}
-                      {/* <Btn type="save" onClick={() =>this.handleSaveArticle(article._id)} /> */}
                       <Btn type="save" onClick={()=>this.handleSaveArticle(article._id)} />
                     </ListItem>
                   );
@@ -185,9 +222,9 @@ class Articles extends Component {
 
           <Row>
           <Col size="md-12">
-            <Jumbotron>
-              <h1>Saved Articles</h1>
-            </Jumbotron>
+            <Header>
+              <h2>Saved Articles</h2>
+            </Header>
         
             {/* {this.renderSaved()} */}
 
@@ -204,8 +241,8 @@ class Articles extends Component {
                       <p>Publish Date & Time: {article.date}</p>
                       <a href={article.url} target="_blank">Link To Article</a><br/>
                       <Btn type="delete" onClick={() => this.deleteArticle(article._id)} />
-                      <Btn type="add-note" onClick={() => this.addNoteToArticle(article._id)} />
-                      <Btn type="delete-note" onClick={() => this.deleteNoteFromArticle(article._id)} />
+                      <Btn type="view-note" onClick={this.handleViewNote} />
+                     {this.renderNote()}
                     </ListItem>
                   );
                 })}
