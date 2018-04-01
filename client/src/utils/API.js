@@ -11,7 +11,7 @@ export default {
   },
   // Deletes the article with the given id
   deleteArticle: function(id) {
-    return axios.delete("/api/articles/delete" + id);
+    return axios.delete(`/api/articles/${id}`);
   },
   // Saves a article to the database
   saveArticle: function(articleData) {
