@@ -14,9 +14,17 @@ router
   .put(articlesController.update)
   .delete(articlesController.remove);
 
-  router
+router
   .route("/saved")
   .post(articlesController.create)
+
+router
+  .route("/saved/add")
+  .post(articlesController.addNote)
+
+router
+  .route("/saved/delete")
+  .post(articlesController.delNote)
 
 
 router.route("/scrape")

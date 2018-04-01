@@ -7,15 +7,23 @@ export default {
   },
   // Gets the article with the given id
   getArticle: function(id) {
-    return axios.get("/api/articles/" + id);
+    return axios.get("/api/articles/saved" + id);
   },
   // Deletes the article with the given id
   deleteArticle: function(id) {
-    return axios.delete("/api/articles/" + id);
+    return axios.delete("/api/articles/delete" + id);
   },
   // Saves a article to the database
   saveArticle: function(articleData) {
-    return axios.post("/api/articles", articleData);
+    return axios.post("/api/articles/saved", articleData);
+  },
+
+  addNote: function(id) {
+    return axios.post("/api/articles/saved/add" + id);
+  },
+
+  deleteNote: function(id) {
+    return axios.delete("/api/articles/saved/delete" + id);
   },
 
   scrape: function(data) {

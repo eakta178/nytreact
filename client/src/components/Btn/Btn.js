@@ -7,27 +7,27 @@ import "./Btn.css";
 const Btn = props => {
   switch (props.type){
     default:
-    return(<button >
+    return(<button {...props}>
       Button
       </button>);
     break;
     case "delete":
-    return(<button >
-    ✗
+    return(<button {...props} >
+    Delete Article
     </button>);
     break;
     case "save":
-    return(<button >
-    Save
+    return(<button {...props}>
+    Save Article
     </button>);
     break;
     case "add-note":
-    return(<button >
+    return(<button {...props} >
     Add Note
     </button>);
     break;
     case "delete-note":
-    return(<button >
+    return(<button {...props}>
     Delete Note
     </button>);
     break;

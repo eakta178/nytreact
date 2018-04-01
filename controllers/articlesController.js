@@ -12,6 +12,7 @@ module.exports = {
   findById: function(req, res) {
     db.Article
       .findById(req.params.id)
+      .populate("note")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -33,5 +34,20 @@ module.exports = {
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-  }
+  },
+  addNote: function(req, res) {
+    db.Note
+      .create(req.body)
+      .then(dbNote => db.Article.findOneAndUpdate({ _id : req.params.id}, { note: dbNote._id }, { new: true }) )
+      .then(dbArticle => res.json(dbArticle))
+      .catch(err => res.status(422).json(err));
+  },
+
+  delNote: function(req, res) {
+    db.Note
+      .remove(req.body)
+      .then(dbNote => db.Article.findOneAndUpdate({ _id : req.params.id}, { note: dbNote._id }) )
+      .then(dbArticle => res.json(dbArticle))
+      .catch(err => res.status(422).json(err));
+  },
 };
