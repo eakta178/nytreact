@@ -49,9 +49,9 @@ class Articles extends Component {
   addNoteToArticle = (event, id) => {
     console.log('log id',id);
     event.preventDefault();
-    API.addNote({
+    API.addNote(id,{
       titleName: this.state.notes[id].titleName,
-      bodyName: this.state.notes[id].bodyName 
+      bodyName: this.state.notes[id].bodyName
     
     })
       .then(res => this.loadSavedArticles())

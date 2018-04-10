@@ -20,12 +20,12 @@ router
   .post(articlesController.create)
 
 router
-  .route("/saved/add")
+  .route("/saved/add/:id")
   .post(articlesController.addNote)
 
 
 router
-  .route("/saved/delete")
+  .route("/saved/delete/:id")
   .post(articlesController.delNote)
 
 

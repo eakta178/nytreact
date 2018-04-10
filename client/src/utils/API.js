@@ -18,13 +18,13 @@ export default {
     return axios.post("/api/articles/saved", articleData);
   },
 
-  addNote: function(data) {
+  addNote: function(id, data) {
     console.log('data', data);
-    return axios.post("/api/articles/saved/add", data);
+    return axios.post("/api/articles/saved/add/"+id, data);
   },
 
   deleteNote: function(id) {
-    return axios.delete("/api/articles/saved/delete" + id);
+    return axios.delete("/api/articles/saved/delete/" + id);
   },
 
   scrape: function(data) {
