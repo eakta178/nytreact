@@ -54,9 +54,15 @@ class Articles extends Component {
     
     })
       .then(res => {
-
-        this.loadSavedArticles();
-        
+        this.setState({      
+          notes: {
+            [id] : {
+            bodyName: this.state.notes[id].bodyName,
+            titleName: this.state.notes[id].titleName
+            }
+          }
+        });
+        this.loadSavedArticles();      
       })
       .catch(err => console.log(err));
   };
@@ -65,9 +71,12 @@ class Articles extends Component {
     // delete note from the Article
   deleteNoteFromArticle = (event, id) => {
     event.preventDefault();
-      API.deleteNote(id)
-        .then(res => this.loadSavedArticles())
-        .catch(err => console.log(err));
+    API.delNote(id,{
+      titleName: this.state.notes[id].titleName,
+      bodyName: this.state.notes[id].bodyName
+    
+    }).then(res => this.loadSavedArticles())
+      .catch(err => console.log(err));
     };
 
 
@@ -150,9 +159,10 @@ class Articles extends Component {
   }
 
   renderNote = (id) => {
-    
+    console.log('id inside render note '+ id);
     const notesToDisplay = this.state.notesToDisplay;
     notesToDisplay.push(id);
+
     const bodyNameContent = (this.state.notes[id]) ? this.state.notes[id].bodyName : '';
     const titleNameContent = (this.state.notes[id]) ? this.state.notes[id].titleName : '';
     this.setState({

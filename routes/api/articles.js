@@ -26,7 +26,7 @@ router
 
 router
   .route("/saved/delete/:id")
-  .post(articlesController.delNote)
+  .delete(articlesController.delNote)
 
 
 router.route("/scrape")

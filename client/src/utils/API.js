@@ -24,7 +24,8 @@ export default {
     return axios.post("/api/articles/saved/add/"+id, data);
   },
 
-  deleteNote: function(id) {
+  delNote: function(id) {
+    console.log('inside delete note api')
     return axios.delete("/api/articles/saved/delete/" + id);
   },
 

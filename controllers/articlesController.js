@@ -46,10 +46,13 @@ module.exports = {
   },
 
   delNote: function(req, res) {
+    console.log('req.params.id', req.params.id);
+    console.log('req.body', req.body);
     db.Note
       .remove(req.body)
       .then(dbNote => db.Article.findOneAndUpdate({ _id : req.params.id}, { note: dbNote._id }) )
       .then(dbArticle => res.json(dbArticle))
       .catch(err => res.status(422).json(err));
   },
+
 };
