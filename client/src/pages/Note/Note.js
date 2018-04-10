@@ -8,6 +8,16 @@ const Note = props => {
   const bodyName = `${props._id}_bodyName`;
       return (
       <form>
+      <FormBtn
+        onClick={(event) => props.addNoteToArticle(event, props._id)}
+      >
+        Save Note
+      </FormBtn>
+      <FormBtn
+        className="btn-info" onClick={(event) => props.deleteNoteFromArticle(event, props._id)}
+      >
+        Delete Note
+      </FormBtn>
       <Input
         value={props.titleInput}
         onChange={props.handleInputChange}
@@ -21,16 +31,7 @@ const Note = props => {
         placeholder="Add Note here"
       />
 
-      <FormBtn
-        onClick={(event) => props.addNoteToArticle(event, props._id)}
-      >
-        Add Note
-      </FormBtn>
-      <FormBtn
-        className="btn-danger" onClick={(event) => props.deleteNoteFromArticle(event, props._id)}
-      >
-        Delete Note
-      </FormBtn>
+
       
       
       </form>

@@ -38,8 +38,7 @@ class Articles extends Component {
   };
 
   // Deletes a article from the database with a given id, then reloads articles from the db
-  deleteArticle = (event, id) => {
-    event.preventDefault();
+  deleteArticle = (id) => {
     API.deleteArticle(id)
       .then(res => this.loadSavedArticles())
       .catch(err => console.log(err));
@@ -54,7 +53,11 @@ class Articles extends Component {
       bodyName: this.state.notes[id].bodyName
     
     })
-      .then(res => this.loadSavedArticles())
+      .then(res => {
+
+        this.loadSavedArticles();
+        
+      })
       .catch(err => console.log(err));
   };
 
@@ -108,6 +111,7 @@ class Articles extends Component {
           [nameField]: value 
         }
       }
+
     });
   }
 
@@ -252,9 +256,11 @@ class Articles extends Component {
             </Header>     
             {/* {this.renderSaved()} */}
               {this.state.saved.length ? (
+             
               <List>
                 {this.state.saved.map(article => {
                   return (
+                    // <Row>
                     <ListItem key={article._id}>
                       <a href={"/articles/" + article._id}>
                         <strong>
@@ -267,6 +273,7 @@ class Articles extends Component {
                       <Btn type="view-note" onClick={() =>this.renderNote(article._id)} />
                       {this.displayNotes(article._id)}
                     </ListItem>
+                   
                   );
                 })}
               </List>
