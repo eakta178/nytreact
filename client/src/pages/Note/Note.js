@@ -13,11 +13,12 @@ const Note = props => {
       >
         Save Note
       </FormBtn>
-      <FormBtn
-        className="btn-info" onClick={(event) => props.deleteNoteFromArticle(event, props._id)}
+      <button
+        style={{ float: "right", margin: 7, color: "#2F4F4F" }} className="btn btn-danger" onClick={(event) => props.deleteNoteFromArticle(event, props._id)}
       >
         Delete Note
-      </FormBtn>
+
+      </button>
       <Input
         value={props.titleInput}
         onChange={props.handleInputChange}
