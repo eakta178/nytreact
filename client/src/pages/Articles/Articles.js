@@ -5,7 +5,7 @@ import Btn from "../../components/Btn";
 import API from "../../utils/API";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, FormBtn } from "../../components/Form";
 import Saved from "../Saved";
 import Note from "../Note";
 
@@ -14,13 +14,13 @@ class Articles extends Component {
   state = {
     articles: [],
     saved: [],
-    notes: [],
+    notes: {},
     topic: "",
     start: "",
     end: "",
-    titleInput: "",
-    bodyInput: "",
-
+    titleName: "",
+    bodyName: "",
+    notesToDisplay: []
   };
 
   // When the component mounts, load all articles and save them to this.state.articles
@@ -38,22 +38,30 @@ class Articles extends Component {
   };
 
   // Deletes a article from the database with a given id, then reloads articles from the db
-  deleteArticle = id => {
+  deleteArticle = (event, id) => {
+    event.preventDefault();
     API.deleteArticle(id)
       .then(res => this.loadSavedArticles())
       .catch(err => console.log(err));
   };
 
   // Add note to the Article
-  addNoteToArticle = id => {
-    API.addNote(id)
+  addNoteToArticle = (event, id) => {
+    console.log('log id',id);
+    event.preventDefault();
+    API.addNote({
+      titleName: this.state.notes[id].titleName,
+      bodyName: this.state.notes[id].bodyName 
+    
+    })
       .then(res => this.loadSavedArticles())
       .catch(err => console.log(err));
   };
 
 
-    // Add note to the Article
-  deleteNoteFromArticle = id => {
+    // delete note from the Article
+  deleteNoteFromArticle = (event, id) => {
+    event.preventDefault();
       API.deleteNote(id)
         .then(res => this.loadSavedArticles())
         .catch(err => console.log(err));
@@ -79,8 +87,30 @@ class Articles extends Component {
     });
   };
 
-  // When the form is submitted, use the API.savearticle method to save the article data
-  // Then reload articles from the database
+  handleNoteChange = event => {
+    const { name, value } = event.target;
+   
+    const nameArray = name.split('_');
+    const id = nameArray[0];
+    const nameField = nameArray[1];
+    console.log('value', {
+      ...this.state.notes,
+      [id]: {
+        ...this.state.notes[id],
+        [nameField]: value 
+      }
+    });
+    this.setState({
+      notes: {
+        ...this.state.notes,
+        [id]: {
+          ...this.state.notes[id],
+          [nameField]: value 
+        }
+      }
+    });
+  }
+
   handleFormSubmit = event => {
     const articles = [];
     event.preventDefault();
@@ -101,29 +131,6 @@ class Articles extends Component {
     }
   };
 
-  handleViewNote = event => {
-    const notes = [];
-    event.preventDefault();
-    this.renderNote();
-    if (this.state.titleInput) {
-      API.addNote({
-        titleInput: this.state.titleInput,
-        bodyInput: this.state.bodyInput
-        
-      })
-        .then(res=>{
-          console.log(res);
-          res.forEach(note => notes.push(note));
-          this.setState({
-            notes
-          });
-        })
-        .catch(err => console.log(err));
-    }
-  };
-
-
-
   renderSaved = () => {
     return this.state.saved.map(save => (
       <Saved
@@ -138,18 +145,41 @@ class Articles extends Component {
     ));
   }
 
-  renderNote = () => {
-    return this.state.notes.map(note => (
-      <Note
-        _id={note._id}
-       key={note._id}
-       titleInput={note.titleInput}
-       bodyInput={note.bodyInput}
-       handleInputChange={this.handleInputChange}
+  renderNote = (id) => {
+    
+    const notesToDisplay = this.state.notesToDisplay;
+    notesToDisplay.push(id);
+    const bodyNameContent = (this.state.notes[id]) ? this.state.notes[id].bodyName : '';
+    const titleNameContent = (this.state.notes[id]) ? this.state.notes[id].titleName : '';
+    this.setState({
+      notesToDisplay,
+      notes: {
+        [id] : {
+        bodyName: bodyNameContent,
+        titleName: titleNameContent
+        }
+      }
+    });
+
+  }
+
+  displayNotes = (id) => {
+    if (this.state.notesToDisplay.includes(id)) {
+      const name = `${id}_name`;
+      return (
+        <div>
+          <Note
+        _id={id}
+       key={id}
+       titleInput={(this.state.notes[id]) ? this.state.notes[id].titleName : ''}
+       bodyInput={(this.state.notes[id]) ? this.state.notes[id].bodyName : ''}
+       handleInputChange={this.handleNoteChange}
        addNoteToArticle ={this.addNoteToArticle}
        deleteNoteFromArticle={this.deleteNoteFromArticle}
       />
-    ));
+        </div>
+      )
+    }
   }
 
 // -------------------------------------
@@ -174,20 +204,17 @@ class Articles extends Component {
                 value={this.state.start}
                 onChange={this.handleInputChange}
                 name="start"
-                placeholder="Start Year"
+                placeholder="Start Year (required)"
               />
               <Input
                 value={this.state.end}
                 onChange={this.handleInputChange}
                 name="end"
-                placeholder="End Year"
+                placeholder="End Year (required)"
               />
-
               <FormBtn
-                
                 disabled={!(this.state.topic)}
-                onClick={this.handleFormSubmit}
-              >
+                onClick={this.handleFormSubmit}>
                 Search
               </FormBtn>
             </form>
@@ -218,16 +245,12 @@ class Articles extends Component {
             )}
             </Col>
           </Row>
-
-
           <Row>
           <Col size="md-12">
             <Header>
               <h2>Saved Articles</h2>
-            </Header>
-        
+            </Header>     
             {/* {this.renderSaved()} */}
-
               {this.state.saved.length ? (
               <List>
                 {this.state.saved.map(article => {
@@ -241,17 +264,15 @@ class Articles extends Component {
                       <p>Publish Date & Time: {article.date}</p>
                       <a href={article.url} target="_blank">Link To Article</a><br/>
                       <Btn type="delete" onClick={() => this.deleteArticle(article._id)} />
-                      <Btn type="view-note" onClick={this.handleViewNote} />
-                     {this.renderNote()}
+                      <Btn type="view-note" onClick={() =>this.renderNote(article._id)} />
+                      {this.displayNotes(article._id)}
                     </ListItem>
                   );
                 })}
               </List>
             ) : (
               <h3>No Saved Articles</h3>
-            )}
-      
-            
+            )} 
             </Col>
           </Row>
 

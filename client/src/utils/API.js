@@ -18,8 +18,9 @@ export default {
     return axios.post("/api/articles/saved", articleData);
   },
 
-  addNote: function(id) {
-    return axios.post("/api/articles/saved/add" + id);
+  addNote: function(data) {
+    console.log('data', data);
+    return axios.post("/api/articles/saved/add", data);
   },
 
   deleteNote: function(id) {

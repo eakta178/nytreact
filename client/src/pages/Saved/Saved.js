@@ -1,15 +1,12 @@
 import React from "react";
-import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
-import Jumbotron from "../../components/Jumbotron";
 import Btn from "../../components/Btn";
 
 const Saved = props =>
 
-            {this.state.articles.length ? (
+            {this.props.articles.length ? (
               <List>
-                {this.state.articles.map(article => {
+                {this.props.articles.map(article => {
                   return (
                     <ListItem key={article._id}>
                       <a href={"/articles/" + article._id}>

@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 
 const NoteSchema = new Schema({
-  title: { type: String },
-  body: { type: String }
+  titleName: { type: String },
+  bodyName: { type: String }
 });
 
 const Note = mongoose.model("Note", NoteSchema);

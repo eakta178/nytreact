@@ -36,6 +36,8 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   addNote: function(req, res) {
+    console.log('req.body', req.body);
+    console.log('req.params.id', req.body.id);
     db.Note
       .create(req.body)
       .then(dbNote => db.Article.findOneAndUpdate({ _id : req.params.id}, { note: dbNote._id }, { new: true }) )
