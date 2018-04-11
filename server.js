@@ -16,7 +16,7 @@ app.use(routes);
 
 // Connect to the Mongo DB
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/nytreact_preprod"
+  process.env.MONGODB_URI || "mongodb://localhost/nytreact_prod"
 );
 
 // Start the API server
