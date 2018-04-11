@@ -75,7 +75,17 @@ class Articles extends Component {
       titleName: this.state.notes[id].titleName,
       bodyName: this.state.notes[id].bodyName
     
-    }).then(res => this.loadSavedArticles())
+    }).then(res => 
+      {  this.setState({      
+        notes: {
+          [id] : {
+          bodyName: '',
+          titleName: ''
+          }
+        }
+      });
+        this.loadSavedArticles()
+      })
       .catch(err => console.log(err));
     };
 
@@ -162,7 +172,6 @@ class Articles extends Component {
     console.log('id inside render note '+ id);
     const notesToDisplay = this.state.notesToDisplay;
     notesToDisplay.push(id);
-
     const bodyNameContent = (this.state.notes[id]) ? this.state.notes[id].bodyName : '';
     const titleNameContent = (this.state.notes[id]) ? this.state.notes[id].titleName : '';
     this.setState({
@@ -255,7 +264,7 @@ class Articles extends Component {
                 })}
               </List>
             ) : (
-              <h3>No Results to Display</h3>
+              <h3 style={{ color: '#FF0000' }}>No Results to Display</h3>
             )}
             </Col>
           </Row>
@@ -288,7 +297,7 @@ class Articles extends Component {
                 })}
               </List>
             ) : (
-              <h3>No Saved Articles</h3>
+              <h3 style={{ color: '#FF0000' }}>No Saved Articles</h3>
             )} 
             </Col>
           </Row>
