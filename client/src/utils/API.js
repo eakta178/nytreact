@@ -5,6 +5,11 @@ export default {
   getArticles: function() {
     return axios.get("/api/articles");
   },
+
+   // Gets all articles
+  getNotesArticle: function(id) {
+    return axios.get("/api/articles/"+ id);
+  },
   // Gets the article with the given id
   getArticle: function(id) {
     return axios.get("/api/articles/saved" + id);
@@ -26,7 +31,7 @@ export default {
 
   delNote: function(id, data) {
     console.log('inside delete note api')
-    return axios.delete("/api/articles/saved/delete/" + id, data);
+    return axios.delete("/api/articles/saved/delete/"+id, data);
   },
 
   scrape: function(data) {

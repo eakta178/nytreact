@@ -76,7 +76,9 @@ class Articles extends Component {
       bodyName: this.state.notes[id].bodyName
     
     }).then(res => 
-      {  this.setState({      
+      {  
+        console.log('delete response', res)
+        this.setState({      
         notes: {
           [id] : {
           bodyName: '',
@@ -170,6 +172,21 @@ class Articles extends Component {
 
   renderNote = (id) => {
     console.log('id inside render note '+ id);
+    API.getNotesArticle(id)
+    .then(res => {
+      console.log('response', res.data.note)
+         // If there's a note in the article
+         if (res.data.note) {  
+          this.setState({
+            notes: {
+              [id] : {
+              bodyName: res.data.note.bodyName,
+              titleName: res.data.note.titleName           
+            }}
+         })
+        }
+        })
+        .catch(err => console.log(err));
     const notesToDisplay = this.state.notesToDisplay;
     notesToDisplay.push(id);
     const bodyNameContent = (this.state.notes[id]) ? this.state.notes[id].bodyName : '';
