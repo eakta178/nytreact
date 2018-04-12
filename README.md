@@ -4,8 +4,10 @@ A MongoDB, Express, ReactJS and NodeJS application where users can query, displa
 Users can remove saved articles and add/deletes notes to it
 
 Please check out the deployed version in Heroku here!
+https://mighty-cove-52173.herokuapp.com/
 
-Click on the headlines to be re-directed to the full New York Times articles.
+
+Click on the 'Link to Articles' to be re-directed to the full New York Times articles.
 
 Functionality
 On the backend, the app uses express to serve routes and mongoose to interact with a MongoDB database.
