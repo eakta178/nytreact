@@ -28,3 +28,23 @@ Then open another bash or terminal window and run mongod
 Run the script with 'yarn start' it will automaticall open
 localhost:3000 in your browser.
 
+Scrennshots
+-------------------------
+<img width="852" alt="screen shot 2018-04-10 at 5 07 16 pm" src="https://user-images.githubusercontent.com/32559323/38653558-3bd125fe-3dc0-11e8-9a88-97d6de4429d4.png">
+
+Enter Subject, Start and End year & 'Search' button will be enabled.
+Select 'Search' button to search Newyorktimes API
+<img width="853" alt="screen shot 2018-04-10 at 8 48 57 pm" src="https://user-images.githubusercontent.com/32559323/38653594-67325a92-3dc0-11e8-9742-e12d85203dd9.png">
+
+Search Results
+<img width="853" alt="screen shot 2018-04-10 at 8 49 19 pm" src="https://user-images.githubusercontent.com/32559323/38653663-aa919438-3dc0-11e8-9adc-2c27901d586f.png">
+
+Select' Save Articles' to save the articles in Mongo DB & Display in 'Save Artciles' section in UI as below
+<img width="846" alt="screen shot 2018-04-11 at 7 44 52 pm" src="https://user-images.githubusercontent.com/32559323/38653723-f3210684-3dc0-11e8-972e-11f9ba650dfa.png">
+
+Select 'Delete' Article' to delete from Mongo DB & remove display in 'Save Artciles' section in UI.
+Select 'View/Add Note' to View or Add or Delete Note. Only one note is allowed to be associated with each article.
+<img width="771" alt="screen shot 2018-04-11 at 7 49 20 pm" src="https://user-images.githubusercontent.com/32559323/38653835-7b74101c-3dc1-11e8-8796-365e938338d3.png">
+
+
+
