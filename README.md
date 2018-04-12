@@ -1,5 +1,5 @@
-# nytreact
-React-based rendition of the New York Times Article Search application
+# nytreact-  React-based rendition of the New York Times Article Search application
+
 A MongoDB, Express, ReactJS and NodeJS application where users can query, display, and save articles from the New York Times Article Search API. 
 Users can remove saved articles and add/deletes notes to it
 
